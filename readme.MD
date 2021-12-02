@@ -1,7 +1,4 @@
-# About AlphaMine
-
-
-It is clear that antibiotic resistance is eminently complex by its nature, and that as knowledge about it increases, the number of possibilities and the multiple mechanisms involved becomes greater, especially regarding indirect interactions that may create the right conditions for resistance to emerge. In this context, it could be valuable to analyze the biological system from a bottom-to-top perspective, focusing on how the connections between simple elements bring out the dangerous capacities of resistant bacteria. Thus, it may be worth using approaches that seek to find from scratch those threads to pull at first: what may be seating the bases for resistance? That was the motivation to create AlphaMine.
+# About Pangee
 
 ![AlphaMine](animation.gif)
 
