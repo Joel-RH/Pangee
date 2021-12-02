@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import sys
 import re
@@ -9,7 +11,7 @@ from Bio import SeqIO
 import pyrodigal
 
 # This is the main class that contains the entire system.
-class AlphaMine():
+class Pangee():
     
     sim_thresh = 70
     len_margin = 0.1
@@ -17,7 +19,7 @@ class AlphaMine():
     
     """
     This a menu function designed to interface with the user 
-    when AlphaMine is used in a standalone manner. It takes
+    when Pangee is used in a standalone manner. It takes
     text inputs from the terminal, and sends them to the 
     Command Manager, the centralized system that starts
     the tasks when required.
@@ -26,40 +28,40 @@ class AlphaMine():
     def start():
         
         print("\n")
-        print("       >  A L P H A   M I N E  <        ")
+        print("           >  P A N G E E  <            ")
         print("________________________________________")
         print(" ")
         print("        Pangenomic Analysis Tool        ")
         print("----------------------------------------")
         print("\n")
-        print("Welcome to AlphaMine!")
+        print("Welcome to Pangee!")
         print("\n")
         print("Type 'help' to see available commands")
 
         
-        while AlphaMine.active:
+        while Pangee.active:
             
             command = input()
             
             if command == "preprocess_AMR_data":
                 
-                AlphaMine.Commands.preprocess_AMR_data()
+                Pangee.Commands.preprocess_AMR_data()
             
             if command == "find_pangenome":
                 
-                AlphaMine.Commands.find_pangenome()
+                Pangee.Commands.find_pangenome()
            
             elif command == "find_resistome":
                 
-                AlphaMine.Commands.find_resistome()
+                Pangee.Commands.find_resistome()
                 
             elif command == "help":
  
-                AlphaMine.Commands.show_help()
+                Pangee.Commands.show_help()
                 
             elif command == "stop":
                 
-                AlphaMine.active = False
+                Pangee.active = False
                 
             else:
                 
@@ -83,10 +85,10 @@ class AlphaMine():
     # The link with the preprocessor.
     def preprocess():
         
-        AlphaMine.Preprocessor.generate_seq_library()
+        Pangee.Preprocessor.generate_seq_library()
             
     """
-    The link to order Pangee a pangenomic coperation.
+    The link to order the core a pangenomic coperation.
     It loads the files needed from the directory provided
     and prepares them for processing, together with 
     the right parameters.
@@ -112,23 +114,23 @@ class AlphaMine():
         print("...")
         print("")
           
-        print("Sending genome collection to pangee")
+        print("Sending genome collection to the core")
         
         print("")
         print("...")
         print("")
         
-        pangenome = AlphaMine.Pangee.compute_pangenome(seq_paths, 
-                                                       AlphaMine.sim_thresh, 
+        pangenome = Pangee.Core.compute_pangenome(seq_paths, 
+                                                       Pangee.sim_thresh, 
                                                        pangenome_type, 
-                                                       AlphaMine.len_margin)
+                                                       Pangee.len_margin)
         
         return pangenome
         
     """
     The Command Manager is the centralized structure responding to specific 
     instructions. It can work coupled with the user interface, in standalone mode,
-    or just by taking AlphaMine as some module in a broader pipeline, a case
+    or just by taking Pangee as some module in a broader pipeline, a case
     in which the commands can be called directly.
     """    
     class Commands():
@@ -168,9 +170,9 @@ class AlphaMine():
             
             try:
              
-                AlphaMine.preprocess()
+                Pangee.preprocess()
                 
-                AlphaMine.start()
+                Pangee.start()
             
             except Exception as e: 
                 
@@ -197,11 +199,11 @@ class AlphaMine():
                     except:
                         print("ERROR: please, enter a valid pangenome type")
                 
-                pangenome = AlphaMine.pangenomize(genomes_path, pangenome_type)
+                pangenome = Pangee.pangenomize(genomes_path, pangenome_type)
                 
-                AlphaMine.save_seqset(pangenome, "pangenome")
+                Pangee.save_seqset(pangenome, "pangenome")
                 
-                AlphaMine.start()
+                Pangee.start()
                  
             except Exception as e: 
                 
@@ -218,19 +220,19 @@ class AlphaMine():
             
              try:
              
-                resistant_pangenome = AlphaMine.pangenomize("r_genomes", 1)
+                resistant_pangenome = Pangee.pangenomize("r_genomes", 1)
                 
-                susceptible_pangenome = AlphaMine.pangenomize("s_genomes", 1)
+                susceptible_pangenome = Pangee.pangenomize("s_genomes", 1)
                 
-                intersection_pangenome = AlphaMine.intersection(resistant_pangenome, susceptible_pangenome)
+                intersection_pangenome = Pangee.intersection(resistant_pangenome, susceptible_pangenome)
                  
-                resistome = AlphaMine.subtract_B_to_A(resistant_pangenome, intersection_pangenome)
+                resistome = Pangee.subtract_B_to_A(resistant_pangenome, intersection_pangenome)
    
-                AlphaMine.save_seqset(resistome, "resistome")
+                Pangee.save_seqset(resistome, "resistome")
                 
                 print("Resistome computed!")
                 
-                AlphaMine.start()
+                Pangee.start()
                  
              except Exception as e:
                  
@@ -436,8 +438,8 @@ class AlphaMine():
             index = 1
               
             for i in range(len(only_susceptible_genomes)):
-                AlphaMine.loadingBar(i+1,s_genomes,3)
-                index = AlphaMine.Preprocessor.fasta_to_seqset(only_susceptible_genomes[i], g_path, "s_genomes/", index)
+                Pangee.loadingBar(i+1,s_genomes,3)
+                index = Pangee.Preprocessor.fasta_to_seqset(only_susceptible_genomes[i], g_path, "s_genomes/", index)
             
             
             print("Exporting indexed only-resistance genomes...")
@@ -445,17 +447,17 @@ class AlphaMine():
             index = 1
             
             for i in range(len(only_resistant_genomes)):       
-                 AlphaMine.loadingBar(i+1,r_genomes,3)
-                 index = AlphaMine.fasta_to_seqset(only_resistant_genomes[i], g_path, "r_genomes/", index)    
+                 Pangee.loadingBar(i+1,r_genomes,3)
+                 index = Pangee.fasta_to_seqset(only_resistant_genomes[i], g_path, "r_genomes/", index)    
          
             
     """
-    Pangee is AlphaMine's core. This class
+    This is Pangee's core. The class
     contains all the tools to perform pangenomic and genomic
     operations based on sequence sets, so it is connected to 
     the rest of the system to recieve instructions and parameters.
     """
-    class Pangee():
+    class Core():
         
         
         """
@@ -508,7 +510,7 @@ class AlphaMine():
                 seq1 = ref_genome[index_ref]
                 seq2 = genome[index_gen]
                 
-                similarity = AlphaMine.Pangee.kengine(seq1,seq2)
+                similarity = Pangee.Core.kengine(seq1,seq2)
                 
                 if similarity > sim_threshold:
                     
@@ -530,7 +532,7 @@ class AlphaMine():
                         seq1 = ref_genome[index_ref]
                         seq2 = genome[index_gen]
                         
-                        similarity = AlphaMine.Pangee.kengine(seq1,seq2)
+                        similarity = Pangee.Core.kengine(seq1,seq2)
                         
               
                         if similarity > sim_threshold:
@@ -549,7 +551,7 @@ class AlphaMine():
                         seq1 = ref_genome[index_ref]
                         seq2 = genome[index_gen]
                 
-                        similarity = AlphaMine.Pangee.kengine(seq1,seq2)
+                        similarity = Pangee.Core.kengine(seq1,seq2)
     
          
                         if similarity > sim_threshold:
@@ -592,7 +594,7 @@ class AlphaMine():
                     seq1 = genome[index_ref]
                     seq2 = ref_genome[index_gen]
                     
-                    similarity = AlphaMine.Pangee.kengine(seq1,seq2)
+                    similarity = Pangee.Core.kengine(seq1,seq2)
                     
                     analyzed += 1
                     
@@ -611,7 +613,7 @@ class AlphaMine():
                     seq1 = genome[index_ref]
                     seq2 = ref_genome[index_gen]
             
-                    similarity = AlphaMine.Pangee.kengine(seq1,seq2)
+                    similarity = Pangee.Core.kengine(seq1,seq2)
   
                     analyzed += 1
      
@@ -646,12 +648,12 @@ class AlphaMine():
                
                trials += 1
         
-               AlphaMine.loadingBar(trials,len(lengths[0]),3)
+               Pangee.loadingBar(trials,len(lengths[0]),3)
                
                
                if pangenome_type == 0:
         
-                   seq,lengths = AlphaMine.Pangee.compare_for_core(ref_genome, 
+                   seq,lengths = Pangee.Core.compare_for_core(ref_genome, 
                                                           genome, 
                                                           sim_threshold, 
                                                           len_margin, 
@@ -664,7 +666,7 @@ class AlphaMine():
               
                if pangenome_type == 1:    
                    
-                    seq,lengths = AlphaMine.Pangee.compare_for_complete(ref_genome, 
+                    seq,lengths = Pangee.Core.compare_for_complete(ref_genome, 
                                                         genome, 
                                                         sim_threshold, 
                                                         len_margin, 
@@ -700,11 +702,11 @@ class AlphaMine():
            difference = []
            for seqA in genomeA:   
                found = False
-               AlphaMine.loadingBar(i+1,len(genomeA),3)
+               Pangee.loadingBar(i+1,len(genomeA),3)
                i += 1
                for seqB in genomeB:
-                   similarity = AlphaMine.Pangee.kengine(seqA,seqB)
-                   if similarity > AlphaMine.sim_thresh:
+                   similarity = Pangee.Core.kengine(seqA,seqB)
+                   if similarity > Pangee.sim_thresh:
                        found = True
                        break
                if not found:
@@ -732,7 +734,7 @@ class AlphaMine():
             print("Loading genomes")
             for i in range(0, len(genome_paths)):
                 
-                AlphaMine.loadingBar(i+1,len(genome_paths),3)
+                Pangee.loadingBar(i+1,len(genome_paths),3)
                 
                 seq_list = open(genome_paths[i]).read().splitlines()
                 seqs = len(seq_list)
@@ -813,7 +815,7 @@ class AlphaMine():
                 print(" ")
                 
                 if len(pangenome) > 0:
-                    pangenome = AlphaMine.Pangee.analyze(pangenome_type,
+                    pangenome = Pangee.Core.analyze(pangenome_type,
                                                          genomes[i], 
                                                          pangenome, 
                                                          sim_threshold, 
@@ -870,11 +872,11 @@ class AlphaMine():
         print(" ")
         
     
-        intersection = AlphaMine.Pangee.analyze(0,
+        intersection = Pangee.Core.analyze(0,
                                              prob_genome, 
                                              intersection, 
-                                             AlphaMine.sim_thresh, 
-                                             AlphaMine.len_margin) 
+                                             Pangee.sim_thresh, 
+                                             Pangee.len_margin) 
 
         
         if len(intersection) > 0:
@@ -908,7 +910,7 @@ class AlphaMine():
         print(" ")
         
     
-        subtracted = AlphaMine.Pangee.A_minus_B(genome_A, genome_B) 
+        subtracted = Pangee.Core.A_minus_B(genome_A, genome_B) 
   
         if len(subtracted) > 0:
            
@@ -923,15 +925,11 @@ if __name__ == "__main__":
              
               
     """
-    To use AlphaMine in a standalone fashion,
+    To use Pangee in a standalone fashion,
     just call the start method and the interface will be 
     instanced as the system's control mechanisms.
     To use it as a module, just call the commands
     in the Command Manager with the parameters required.
     """
-    AlphaMine.start()
+    Pangee.start()
         
-        
-   
-        
-   
