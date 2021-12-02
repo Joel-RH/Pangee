@@ -1,11 +1,11 @@
 # About Pangee
 
-![AlphaMine](animation.gif)
+![Pangee](animation.gif)
 
-AlphaMine is a modular, simple and flexible Python-based genomics software. To perform its task, it does not depend on traditional sequence alignment but a much more efficient combination of word frequency-based methods and low dimensional clustering. The software can be easily integrated into computational pipelines, and it is intuitive to use and configure. It focuses on the autonomous analysis of large collections of prokaryotic genomes from a comparative perspective and relies on set theory operations.
+Pangee is a modular, simple and flexible Python-based genomics software still in development. To perform its task, it does not depend on traditional sequence alignment but a much more efficient combination of word frequency-based methods and low dimensional clustering. The software can be easily integrated into computational pipelines, and it is intuitive to use and configure. It focuses on the autonomous analysis of large collections of prokaryotic genomes from a comparative perspective and relies on set theory operations.
 
  
-AlphaMine is designed as a nested-class structure. Its core module, called Pangee, is the one directly manipulating the genomes, performing set operations, and constructing pangenomes. Then, the system is built on Pangee with the other parts, such as a preprocessor for data preparation, a command-line interface for better user control, or a managing mechanism to bridge between the higher-level instructions and the internal processes.
+Pangee is designed as a nested-class structure. Its core module is the one directly manipulating the genomes, performing set operations, and constructing pangenomes. Then, the system is built on this core with the other parts, such as a preprocessor for data preparation, a command-line interface for better user control, or a managing mechanism to bridge between the higher-level instructions and the internal processes.
 
 
 ## Rationale
@@ -13,10 +13,7 @@ AlphaMine is designed as a nested-class structure. Its core module, called Pange
 Let us imagine that we want to identify the genetic elements related to a certain function in a family of species.
 
  
-We have a subgroup of those species, R, in which we observe the functionality per se, while another subgroup S does not show it. Subsequently, one way to find potential candidates would be to start isolating those genetic components that are only found in the genomes of subgroup R and never appear in S or vice versa. Why? Well, those that only appear in R could be directly exerting the function of interest, while those that only appear in S could be inhibiting the first: in one way or the other, the possibility of studying them could be enlightening.
-
- 
-Replace R and S with "Resistant" and "Susceptible" to a specific antibiotic, and the result of this approach will be a pool of genetic elements that may be supporting antibiotic resistance, by their action or absence. Consequently, this seems logical first step to understand, from bottom to top, this dangerous threat emerges. But, what is this "group of genetic elements characteristic of some type of organisms"? A collective super-genome? Be that as it may, something like this is necessary to make the approach possible.
+We have a subgroup of those species, A, in which we observe the functionality per se, while another subgroup B does not show it. Subsequently, one way to find potential candidates would be to start isolating those genetic components that are only found in the genomes of subgroup B and never appear in A or vice versa. Why? Well, those that only appear in B could be directly exerting the function of interest, while those that only appear in A could be inhibiting the first: in one way or the other, the possibility of studying them could be enlightening. But, what is this "group of genetic elements characteristic of some type of organisms"? A collective super-genome? Be that as it may, something like this is necessary to make the approach possible.
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -45,11 +42,11 @@ On the other hand, for the core pangenome, select as reference the genome with t
 
  
    
-## Resistome-finding Algorithm
+## Computing the Difference between two Pangenomes 
 
-Start with two groups of genomes: resistant and susceptible to the antibiotic. To avoid excluding any potential candidate, first construct the complete pangenome for each class, which means to compute the union of all the genomes belonging to the group in question. Once both pangenomes are obtained, compute the intersection between them. Then, on the one hand, subtract the intersection to the resistant pangenome. 
+Start with  A and B groups of genomes: A present the function and B do not. To avoid excluding any potential candidate, first construct the complete pangenome for each class, which means to compute the union of all the genomes belonging to the group in question. Once both pangenomes are obtained, compute the intersection between them. Then, on the one hand, subtract the intersection to the resistant pangenome. 
 
-The result will be the resistome. This is the set of all sequences that only appear on resistant strains. On the other hand, subtract the intersection to the susceptible pangenome. The result will be the vulnerome. This is the set of all sequences that only appear on susceptible strains. 
+The result will be the positive exclusivesome. This is the set of all sequences that only appear on B strains. On the other hand, subtract the intersection to the susceptible pangenome. The result will be the negative exclusivesome. This is the set of all sequences that only appear on non-functional strains. 
 
 Having obtained both the resistome and the vulnerome, the task of finding potential candidates is solved.
 
@@ -71,4 +68,3 @@ At this point, we simply have to calculate the cosine distance between both vect
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
